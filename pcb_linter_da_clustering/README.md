@@ -172,7 +172,6 @@ J
 ```
 
 ---
-
 # 🔬 Internal Processing Pipeline
 
 ```mermaid
