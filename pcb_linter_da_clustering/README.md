@@ -1,141 +1,1230 @@
-# PCB Linter Plugin with Deterministic Annealing Clustering
-**eSim Semester Long Internship — Spring 2026**
-FOSSEE, IIT Bombay
+# PCB Linter using Deterministic Annealing Clustering
 
-## Author
+<p align="center">
+
+<img src="assets/logo.png" width="180"/>
+
+</p>
+
+<h3 align="center">
+An Intelligent KiCad Plugin for Electrical Rule Analysis using Graph Analytics, SPICE Simulation, and Deterministic Annealing Clustering
+</h3>
+
+<p align="center">
+
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![KiCad](https://img.shields.io/badge/KiCad-8+-314CB6?style=for-the-badge&logo=kicad&logoColor=white)
+![NGSpice](https://img.shields.io/badge/NGSpice-Supported-success?style=for-the-badge)
+![eSim](https://img.shields.io/badge/eSim-Compatible-orange?style=for-the-badge)
+![NetworkX](https://img.shields.io/badge/NetworkX-Graph%20Analytics-blue?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+
+</p>
+
+<p align="center">
+
+Built during the **FOSSEE IIT Bombay eSim Summer Fellowship**
+
+</p>
+
+---
+
+# 📖 Overview
+
+PCB Linter is an intelligent **KiCad PCBNew plugin** that automatically analyzes PCB designs beyond conventional Design Rule Checks (DRC).
+
+Instead of only checking physical constraints such as track clearance or overlap, the plugin studies the **electrical behaviour** of the circuit by combining graph theory, SPICE simulation and Deterministic Annealing clustering.
+
+The plugin automatically extracts the PCB connectivity graph, generates a SPICE netlist, performs NGSpice simulation, analyzes voltage/current domains and produces an interactive HTML report containing network visualizations, electrical findings and quality metrics.
+
+---
+
+# ✨ Highlights
+
+- ⚡ Automatic SPICE Netlist Generation
+- 🧠 Deterministic Annealing Clustering
+- 📊 Interactive HTML Dashboard
+- 🌐 Network Graph Visualization
+- 📈 Voltage Heatmaps
+- 🔍 Floating Net Detection
+- ⚠ High Fanout Detection
+- 🚨 Single Point of Failure Detection
+- 🔋 Automatic Power Rail Identification
+- 🧩 eSim Subcircuit Support
+- 📉 Cluster Quality Metric
+- 📄 Automatic Report Generation
+
+---
+
+# 🎥 Demo
+
+https://drive.google.com/file/d/17kpoB3BqmgxSyOLpP3UkCkHnmOoAlYZf/view
+
+---
+
+# 🚀 Motivation
+
+Modern PCB Design Rule Checkers verify manufacturing constraints but fail to answer questions like
+
+- Which voltage domains exist?
+- Which components are electrically critical?
+- Are there floating signal nets?
+- Which node becomes a Single Point of Failure?
+- Is the circuit electrically balanced?
+- Which regions consume maximum power?
+
+PCB Linter was developed to answer these questions automatically inside KiCad.
+
+---
+
+# 🏗 System Architecture
+
+```mermaid
+flowchart LR
+
+A[KiCad PCB]
+
+-->B[PCB Parser]
+
+B
+
+-->C[Component Extraction]
+
+C
+
+-->D[Network Graph]
+
+D
+
+-->E[Graph Analytics]
+
+E
+
+-->F[Automatic SPICE Generator]
+
+F
+
+-->G[NGSpice Simulation]
+
+G
+
+-->H[Voltage & Current Parser]
+
+H
+
+-->I[Deterministic Annealing Clustering]
+
+I
+
+-->J[Interactive HTML Report]
+```
+
+---
+
+# ⚙ Complete Workflow
+
+```mermaid
+flowchart TD
+
+A[Launch Plugin]
+
+-->B{Choose Mode}
+
+B
+
+-->|KiCad Mode|C[Read PCB]
+
+B
+
+-->|Import Mode|D[Read Voltage File]
+
+C
+
+-->E[Extract Components]
+
+E
+
+-->F[Generate SPICE]
+
+F
+
+-->G[Run NGSpice]
+
+G
+
+-->H[Parse Voltage Data]
+
+D
+
+-->H
+
+H
+
+-->I[Graph Analysis]
+
+I
+
+-->J[DA Clustering]
+
+J
+
+-->K[Generate HTML Report]
+```
+
+---
+
+# 🔬 Internal Processing Pipeline
+
+```mermaid
+flowchart LR
+
+PCB
+
+-->Parser
+
+Parser
+
+-->Graph
+
+Graph
+
+-->Simulation
+
+Simulation
+
+-->Voltage
+
+Simulation
+
+-->Current
+
+Voltage
+
+-->Voltage Domains
+
+Current
+
+-->Current Domains
+
+Voltage Domains
+
+-->Power Domains
+
+Current Domains
+
+-->Power Domains
+
+Power Domains
+
+-->Interactive Report
+```
+
+---
+
+# 🌟 Core Features
+
+## 📌 Graph Extraction
+
+The PCB is transformed into a graph where
+
+- Components become graph nodes.
+- Electrical nets become graph edges.
+- Complete connectivity information is preserved.
+
+---
+
+## 📈 Graph Analytics
+
+The generated graph is analyzed using NetworkX.
+
+Metrics include
+
+- Degree Centrality
+- Betweenness Centrality
+
+This enables automatic detection of
+
+- High Fanout Components
+- Critical Electrical Nodes
+- Single Points of Failure
+
+---
+
+## ⚡ Automatic SPICE Generation
+
+The plugin converts the PCB directly into a SPICE circuit without requiring manual netlist creation.
+
+Supported devices include
+
+- Resistors
+- Capacitors
+- Inductors
+- Voltage Sources
+- Current Sources
+- BJTs
+- MOSFETs
+- Diodes
+- Operational Amplifiers
+- Voltage Regulators
+- eSim Subcircuits
+
+---
+
+## 🔋 Intelligent Power Rail Detection
+
+Power rails are automatically detected from net names.
+
+Examples include
+
+- VCC
+- VDD
+- 3V3
+- 5V
+- 12V
+- VBAT
+- VBUS
+- VEE
+- VNEG
+
+The plugin also allows user-defined voltage configuration.
+
+---
+
+## ⚠ Electrical Issue Detection
+
+Automatically detects
+
+- Floating Signal Nets
+- Missing Voltage Sources
+- High Fanout Components
+- Single Point of Failure
+- Improper Power Nets
+- Unconnected Pins
+- Simulation Failures
+
+---
+
+## 🧠 Deterministic Annealing Clustering
+
+Instead of traditional K-Means clustering, PCB Linter employs Deterministic Annealing.
+
+Benefits include
+
+- Stable convergence
+- Better voltage domain separation
+- No random initialization
+- Reduced local minima
+- Improved clustering quality
+
+---
+
+## 🌐 Interactive HTML Dashboard
+
+A complete HTML report is generated automatically containing
+
+- Quality Score
+- Voltage Domains
+- Current Domains
+- Power Domains
+- Interactive Network Graph
+- Voltage Heatmap
+- Cluster Cards
+- Findings Table
+- Net-to-Component Mapping
+- Simulation Summary
+
+---
+
+# 📊 Feature Summary
+
+| Feature | Supported |
+|----------|-----------|
+| KiCad Integration | ✅ |
+| eSim Integration | ✅ |
+| NGSpice Simulation | ✅ |
+| NetworkX Analytics | ✅ |
+| Voltage Clustering | ✅ |
+| Current Clustering | ✅ |
+| Power Clustering | ✅ |
+| HTML Dashboard | ✅ |
+| Interactive Graph | ✅ |
+| Voltage Heatmap | ✅ |
+| Floating Net Detection | ✅ |
+| High Fanout Detection | ✅ |
+| SPOF Detection | ✅ |
+| Cluster Quality Metric | ✅ |
+| Automatic SPICE Generation | ✅ |
+| Power Rail Detection | ✅ |
+
+---
+
+# 📚 Table of Contents
+
+- Overview
+- Features
+- System Architecture
+- Installation
+- Project Structure
+- Algorithms
+- Usage
+- Report Generation
+- Future Work
+- Acknowledgements
+- License
+
+---
+````md
+# 🛠 Installation
+
+## Prerequisites
+
+Before installing the plugin, ensure the following software is available on your system.
+
+| Software | Version |
+|-----------|----------|
+| Python | 3.10+ |
+| KiCad | 8.0+ |
+| NGSpice | Latest |
+| eSim | 2.5+ |
+
+---
+
+## Clone Repository
+
+```bash
+git clone https://github.com/prishabhatia46/eSim-KiCad-Plugin.git
+```
+
+Move into the plugin directory.
+
+```bash
+cd eSim-KiCad-Plugin/pcb_linter_da_clustering
+```
+
+---
+
+## Install Dependencies
+
+```bash
+pip install networkx pyvis
+```
+
+---
+
+## Enable Plugin
+
+Copy the plugin folder into KiCad's Action Plugin directory.
+
+Restart KiCad.
+
+Open
+
+```
+Tools → External Plugins
+```
+
+or click the toolbar icon.
+
+---
+
+# 📂 Project Structure
+
+```text
+pcb_linter_da_clustering
+│
+├── pcb_linter_action.py
+├── pcb_linter_main.py
+├── icon.png
+│
+├── pcb_linter/
+│
+├── html/
+│
+├── reports/
+│
+├── assets/
+│
+└── README.md
+```
+
+---
+
+# ⚙ Plugin Modes
+
+PCB Linter supports two execution modes.
+
+---
+
+## 1️⃣ KiCad Mode
+
+The plugin directly analyzes the currently opened PCB.
+
+Workflow
+
+```text
+PCB
+
+↓
+
+Extract Components
+
+↓
+
+Generate SPICE
+
+↓
+
+Run NGSpice
+
+↓
+
+Voltage Analysis
+
+↓
+
+DA Clustering
+
+↓
+
+Interactive Report
+```
+
+---
+
+## 2️⃣ Import Mode
+
+Instead of simulating a PCB, existing voltage/current files can be imported.
+
+Useful for
+
+- Existing simulations
+- External SPICE tools
+- Academic datasets
+
+---
+
+# 🔄 Processing Workflow
+
+```mermaid
+flowchart TD
+
+A[KiCad PCB]
+
+-->B[Extract Components]
+
+B
+
+-->C[Generate Network Graph]
+
+C
+
+-->D[Generate SPICE]
+
+D
+
+-->E[Run NGSpice]
+
+E
+
+-->F[Read Voltage Data]
+
+F
+
+-->G[Build Alpha Matrix]
+
+G
+
+-->H[Deterministic Annealing]
+
+H
+
+-->I[Voltage Domains]
+
+I
+
+-->J[Generate Report]
+```
+
+---
+
+# 📊 Graph Analysis
+
+The plugin converts every PCB into a NetworkX graph.
+
+Each
+
+- Component → Node
+- Net → Edge
+
+Example
+
+```text
+R1 ------- C1
+
+ \
+
+  U1
+
+ /
+
+R2 ------- C2
+```
+
+The graph is analyzed to identify
+
+- Critical components
+- Bottlenecks
+- Electrical hubs
+- Connectivity
+
+---
+
+# 📈 Degree Centrality
+
+Degree Centrality measures how many electrical connections each component has.
+
+Components with unusually high degree often indicate
+
+- Power distribution hubs
+- Shared buses
+- High fanout
+
+Formula
+
+```text
+Degree(node)
+
+--------------------
+
+Maximum Possible Degree
+```
+
+---
+
+# 🚨 Betweenness Centrality
+
+Measures how frequently a component lies on the shortest electrical paths.
+
+Higher values indicate
+
+- Critical routing
+- Potential bottlenecks
+- Single Point of Failure
+
+---
+
+# 🔍 Floating Net Detection
+
+Every net connected to only one component is automatically inspected.
+
+The plugin distinguishes between
+
+- Intentional connector pins
+- Actual floating signal nets
+
+Only genuine floating signals are reported.
+
+---
+
+# 🔋 Power Rail Detection
+
+Power rails are inferred automatically from common naming conventions.
+
+Supported examples
+
+```text
+VCC
+
+VDD
+
+3V3
+
+5V
+
+12V
+
+VBUS
+
+VIN
+
+VBAT
+
+VEE
+
+VNEG
+```
+
+Custom voltages can also be assigned using the Power Rail Configuration dialog.
+
+---
+
+# ⚡ Automatic SPICE Generation
+
+The PCB is translated into a SPICE-compatible circuit.
+
+Supported components include
+
+| Component | Supported |
+|-----------|-----------|
+| Resistor | ✅ |
+| Capacitor | ✅ |
+| Inductor | ✅ |
+| Voltage Source | ✅ |
+| Current Source | ✅ |
+| BJT | ✅ |
+| MOSFET | ✅ |
+| Diode | ✅ |
+| Op-Amp | ✅ |
+| Voltage Regulator | ✅ |
+| eSim Subcircuits | ✅ |
+
+---
+
+# 🧩 eSim Integration
+
+Whenever supported components are detected,
+
+PCB Linter automatically imports the corresponding eSim library models.
+
+Examples
+
+- LM741
+- LM358
+- LM7805
+- LM317
+- LM555
+- LM393
+- LM386
+
+If no compatible model exists, intelligent fallback models are used whenever possible.
+
+---
+
+# 💻 Technologies Used
+
+| Category | Technologies |
+|-----------|--------------|
+| Language | Python |
+| PCB API | KiCad PCBNew API |
+| Simulation | NGSpice |
+| Circuit Libraries | eSim |
+| Graph Analytics | NetworkX |
+| Visualization | PyVis |
+| GUI | Tkinter |
+| Reports | HTML + CSS |
+| Data Storage | JSON |
+
+---
+
+# 📦 Output Files
+
+Running the plugin automatically generates
+
+```text
+pcb_linter_report.html
+
+pcb_graph.html
+
+plot_data_v.txt
+
+plot_data_i.txt
+
+pcblinter_sim.cir
+
+pcb_voltages.json
+```
+
+These files are stored inside the plugin output directory.
+
+---
+````
+# 🧠 Deterministic Annealing Clustering
+
+Unlike traditional clustering algorithms that rely on random initialization, PCB Linter employs **Deterministic Annealing (DA)** to discover electrically meaningful voltage domains.
+
+The algorithm gradually minimizes the system's free energy, allowing clusters to evolve smoothly before converging to stable voltage domains.
+
+Advantages include
+
+- Stable convergence
+- No random initialization
+- Reduced local minima
+- Better voltage domain separation
+- Consistent clustering across simulations
+
+---
+
+## Clustering Pipeline
+
+```mermaid
+flowchart TD
+
+A[Voltage Data]
+
+-->B[Build Alpha Similarity Matrix]
+
+B
+
+-->C[Initialize DA Parameters]
+
+C
+
+-->D[Annealing Process]
+
+D
+
+-->E[Cluster Assignment]
+
+E
+
+-->F[Voltage Domains]
+
+F
+
+-->G[Cluster Quality Evaluation]
+```
+
+---
+
+# 📐 Alpha Similarity Matrix
+
+Electrical similarity between nodes is computed using their simulated voltages.
+
+Nodes with similar electrical behaviour obtain higher similarity scores, enabling meaningful voltage domain formation.
+
+```mermaid
+flowchart LR
+
+Voltage
+
+-->AlphaMatrix
+
+AlphaMatrix
+
+-->Similarity
+
+Similarity
+
+-->DAClustering
+```
+
+---
+
+# 📊 Voltage Clustering
+
+Nodes with similar voltage values are automatically grouped into electrical domains.
+
+Example
+
+| Cluster | Domain |
+|----------|--------|
+| Cluster 1 | Ground |
+| Cluster 2 | 3.3V Logic |
+| Cluster 3 | 5V Supply |
+| Cluster 4 | 12V Rail |
+
+---
+
+# ⚡ Current Clustering
+
+Current measurements obtained from NGSpice are independently clustered.
+
+This enables
+
+- Current path analysis
+- Load distribution
+- Current bottleneck identification
+
+---
+
+# 🔋 Power Clustering
+
+Power consumption is computed using
+
+```
+Power = Voltage × Current
+```
+
+Power domains help identify
+
+- High power regions
+- Sensitive analog blocks
+- Heavy current paths
+
+---
+
+# 📈 Cluster Quality Metric
+
+PCB Linter automatically evaluates clustering quality by comparing
+
+- Intra-cluster similarity
+- Inter-cluster separation
+
+The final score is categorized as
+
+| Score | Rating |
+|---------|---------|
+| 90–100 | Excellent |
+| 75–89 | Good |
+| 50–74 | Fair |
+| Below 50 | Poor |
+
+---
+
+# 📑 HTML Report
+
+After analysis, an interactive HTML dashboard is generated automatically.
+
+The report contains
+
+- Overall Quality Score
+- Simulation Summary
+- Voltage Domains
+- Current Domains
+- Power Domains
+- Voltage Heatmap
+- Interactive Network Graph
+- Cluster Cards
+- Findings Table
+- Net-to-Component Mapping
+
+---
+
+# 📊 Report Generation Pipeline
+
+```mermaid
+flowchart TD
+
+Simulation
+
+-->Voltage
+
+Simulation
+
+-->Current
+
+Voltage
+
+-->Heatmap
+
+Voltage
+
+-->ClusterCards
+
+Current
+
+-->PowerDomains
+
+ClusterCards
+
+-->HTML
+
+Heatmap
+
+-->HTML
+
+PowerDomains
+
+-->HTML
+
+HTML
+
+-->Browser
+```
+
+---
+
+# 🌐 Interactive Network Visualization
+
+The generated graph allows users to
+
+- Inspect electrical connectivity
+- Explore component relationships
+- Identify critical nodes
+- Visualize power rails
+- Understand circuit topology
+
+---
+
+# 🔥 Voltage Heatmap
+
+Every voltage node is color coded according to its electrical domain.
+
+| Voltage | Domain |
+|-----------|----------|
+| 0V | Ground |
+| 1.8V | Logic |
+| 3.3V | Digital |
+| 5V | Supply |
+| 12V | High Voltage |
+| Negative | Negative Rail |
+
+---
+
+# ⚠ Findings
+
+PCB Linter automatically reports
+
+✅ Floating Nets
+
+✅ High Fanout Components
+
+✅ Single Point of Failure
+
+✅ Missing Voltage Sources
+
+✅ Improper Power Rails
+
+✅ Unconnected Pins
+
+✅ Simulation Errors
+
+---
+
+# 📈 Quality Score
+
+Every analyzed PCB receives an overall electrical quality score.
+
+The score considers
+
+- Graph topology
+- Electrical findings
+- Floating nets
+- Critical nodes
+- Clustering quality
+
+Higher scores indicate healthier PCB designs.
+
+---
+
+# 🎯 Typical Workflow
+
+```mermaid
+flowchart LR
+
+Design PCB
+
+-->
+
+Run Plugin
+
+-->
+
+Simulation
+
+-->
+
+Graph Analysis
+
+-->
+
+DA Clustering
+
+-->
+
+HTML Report
+
+-->
+
+Fix Issues
+
+-->
+
+Re-run Analysis
+```
+
+---
+
+# 📷 Results
+
+The plugin produces
+
+- Interactive HTML Dashboard
+- Voltage Heatmap
+- Network Visualization
+- Cluster Cards
+- Findings Summary
+- Quality Score
+- Simulation Report
+
+> Screenshots and report previews will be added soon.
+
+---
+# 🚀 Future Improvements
+
+PCB Linter is designed to serve as a foundation for intelligent PCB analysis. Several enhancements are planned for future releases.
+
+## Planned Features
+
+- Machine Learning based anomaly detection
+- Automatic ERC integration
+- Thermal hotspot analysis
+- EMI/EMC estimation
+- Signal Integrity analysis
+- Differential pair verification
+- PCB Routing Quality Score
+- Decoupling capacitor recommendations
+- Power integrity analysis
+- Automatic design optimization suggestions
+- Export reports as PDF
+- Multi-board comparison
+- Cloud-based report generation
+
+---
+
+# 🏆 Achievements
+
+PCB Linter combines multiple domains into a single workflow.
+
+- PCB Design
+- Graph Theory
+- Network Science
+- SPICE Simulation
+- Data Analysis
+- Interactive Visualization
+- Electrical Rule Checking
+
+Instead of treating these as independent tasks, PCB Linter automates the complete analysis pipeline inside KiCad.
+
+---
+
+# 📊 Project Statistics
+
+| Metric | Description |
+|----------|-------------|
+| Language | Python |
+| Framework | KiCad PCBNew API |
+| Graph Library | NetworkX |
+| Visualization | PyVis |
+| Simulation Engine | NGSpice |
+| Circuit Library | eSim |
+| Report Engine | HTML + CSS |
+| Configuration | JSON |
+
+---
+
+# 🎯 Applications
+
+PCB Linter can be used for
+
+- PCB Design Validation
+- Academic Research
+- Hardware Design Education
+- Electrical Network Analysis
+- Power Domain Inspection
+- Circuit Debugging
+- Rapid Prototyping
+- eSim based Simulation
+- Hardware Verification
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+If you would like to improve PCB Linter
+
+1. Fork the repository
+
+2. Create a new branch
+
+```bash
+git checkout -b feature-name
+```
+
+3. Commit your changes
+
+```bash
+git commit -m "Add feature"
+```
+
+4. Push the branch
+
+```bash
+git push origin feature-name
+```
+
+5. Open a Pull Request
+
+---
+
+# 📜 License
+
+This project is released under the MIT License.
+
+Feel free to use, modify and distribute it while retaining proper attribution.
+
+---
+
+# 👩‍💻 Author
+
 **Prisha Bhatia**
-B.Tech CSE (AI and ML), 3rd Year — VIT Bhopal University
 
-- **Mentor:** Mr. Sumanto Kar, FOSSEE IIT Bombay
-- **Principal Investigator:** Prof. Prabhu Ramachandran, Department of Aerospace Engineering, IIT Bombay
+Python Developer
 
-## Overview
-This plugin is a KiCad PCB analysis tool (v4.5) that automatically extracts nets from any `.kicad_pcb` file, runs NGSpice simulation, and applies the **Deterministic Annealing (DA) clustering algorithm** to classify PCB nets into Voltage, Current, and Power Dissipation domains.
+FOSSEE IIT Bombay – eSim Summer Fellow
 
-The DA algorithm is adapted from the work of Baranwal and Salapaka (2015) on clustering of electrical power networks, extended here to the PCB domain as a novel contribution.
+GitHub
 
-The plugin generates a fully self-contained interactive HTML report with quality scores, attenuation matrices, a PCB connectivity graph, and a net-to-component map.
+https://github.com/prishabhatia46
 
-## Features
-- Automatic net extraction from `.kicad_pcb` using the KiCad `pcbnew` Python API
-- SPICE netlist generation with smart voltage source assignment based on net naming conventions
-- NGSpice simulation in headless batch mode
-- DA Clustering on Voltage, Current, and Power Dissipation domains
-- eSim SubcircuitLibrary integration — automatically scans 647+ models and injects `.include` directives for ICs like LM741, LM7805, NE555, and more
-- Interactive HTML report with dark/light mode toggle, quality score (0–100), attenuation matrices, PCB connectivity graph, and net map
-- **Mode 1:** Full simulation pipeline from a KiCad PCB file
-- **Mode 2:** Universal import mode — cluster any existing DC, AC, Transient, or CSV data file without needing a PCB file
+LinkedIn
 
-## Novel Contributions
+https://linkedin.com/in/prishabhatia46
 
-| Contribution | Description |
-|---|---|
-| DA Clustering on PCB Nets | Adapted from power grid analysis; uses αij = Vi/Vj as similarity metric |
-| Current Clustering | Per-net current via Rload technique; uses αij = Ii/Ij |
-| Power Dissipation Clustering | Per-node power Pi = Vi × Ii; uses αij = Pi/Pj |
-| eSim SubcircuitLibrary Integration | Auto-scans all 647 models and injects correct `.include` |
-| Universal Parser (Mode 2) | Supports DC, AC, Transient, and CSV formats for import |
+---
 
-## Plugin Architecture
+# 🙏 Acknowledgements
 
-**Mode 1 — KiCad PCB Workflow**
-**Mode 2 — Universal Import Workflow**
-## Folder Structure
-## Installation
+This work was developed during the **FOSSEE IIT Bombay eSim Summer Fellowship**.
 
-### Requirements
-- KiCad 8.0 (with Python scripting enabled)
-- eSim 2.5 (for SubcircuitLibrary integration)
-- NGSpice (included with eSim)
-- Python packages: `numpy`, `networkx`, `pyvis`
+Special thanks to
 
-### Install Python dependencies:
-```bash
-pip install numpy networkx pyvis
-```
+- FOSSEE, IIT Bombay
+- eSim Development Team
+- KiCad Community
+- NGSpice Developers
+- NetworkX Contributors
+- PyVis Developers
+- Open Source Community
 
-### Steps
-1. Copy the `pcb_linter` folder to your KiCad scripting plugins directory:
+---
 
-   **Linux / WSL:**
-```bash
-   cp -r pcb_linter ~/.local/share/kicad/8.0/scripting/plugins/
-```
-   **Windows:**
-2. Open KiCad → Tools → Scripting Console
-3. Run:
-```python
-   import pcbnew
-   pcbnew.GetWizardsBackTrace()
-```
-4. The plugin will appear under **Tools → External Plugins → PCB Linter**
+# 📚 References
 
-## Usage
+1. KiCad PCBNew API Documentation
 
-### Mode 1 — KiCad PCB
-1. Open your `.kicad_pcb` file in KiCad
-2. Go to **Tools → External Plugins → PCB Linter**
-3. Select **Mode 1** in the dialog
-4. Confirm or adjust the detected power rail voltages
-5. The plugin runs NGSpice and opens the HTML report automatically
+2. NGSpice User Manual
 
-### Mode 2 — Universal Import
-1. Launch the plugin and select **Mode 2**
-2. Browse and select a voltage data file (`.txt`, `.csv`, DC/AC/Transient format)
-3. Optionally import a current data file
-4. The DA clustering runs on the imported data and generates the HTML report
+3. eSim Documentation
 
-## Key Functions
+4. NetworkX Documentation
 
-| Function | Role |
-|---|---|
-| `run()` | Main entry point; orchestrates the full pipeline |
-| `_generate_spice()` | Builds SPICE netlist from KiCad footprints |
-| `_infer_net_voltage()` | Infers supply voltage from net name |
-| `_build_alpha()` | Constructs the DA similarity matrix |
-| `_da_clustering()` | Runs the Deterministic Annealing algorithm |
-| `_make_report()` | Renders the interactive HTML report |
-| `_detect_floating_nets()` | Identifies unconnected signal nets |
-| `_get_power_rail_config()` | Dialog for user voltage confirmation |
-| `_compute_cluster_quality()` | Computes intra and inter cluster quality |
+5. PyVis Documentation
 
-## Test Results Summary
+6. Deterministic Annealing Clustering
 
-| Circuit | Mode | Score | V-Clusters | I-Clusters | P-Clusters | Quality |
-|---|---|---|---|---|---|---|
-| PIC Programmer V03 | 1 | 100 / PASS | 5 | 5 | 5 | Excellent |
-| Stickhub USB Hub | 1 | 85 / PASS | 5 | 3 | 3 | Poor* |
-| LM741 Subcircuit Test | 1 | 100 / PASS | 3 | 1 | 0 | Good |
-| Precision Rectifier | 2 | N/A | 4 | 0 | 0 | N/A |
+7. Clustering of Power Networks, IIT Bombay
 
-*Poor quality due to closely spaced USB differential pair voltages (1.65 V and 1.86 V) — known limitation for such circuits.
+---
 
-## HTML Report Sections
+# ⭐ Support
 
-| Section | Description |
-|---|---|
-| Quality Score Bar | Score 0–100 with PASS / REVIEW / FAIL |
-| DA Clustering Tabs | Voltage, Current, Power Dissipation clusters |
-| Voltage Attenuation Matrix | Colour-coded αij = Vi/Vj |
-| PCB Connectivity Graph | Interactive PyVis graph (Mode 1 only) |
-| Net to Component Map | All nets with connected components |
-| Issues & Recommendations | ERROR, WARNING, INFO with fix suggestions |
-| Cluster Voltage Distribution | Bar chart per cluster |
-| Simulation Coverage | Fully simulated and unmodeled component lists |
-| Dark / Light Mode Toggle | Persistent across browser sessions |
+If you found this project useful,
 
-## Limitations
-- Per-net current clustering is not meaningful for purely series circuits
-- ICs not present in the eSim SubcircuitLibrary are excluded from simulation
-- Mode 2 transient import uses only the last time step value
-- Clustering quality may show Poor for circuits with closely spaced voltage rails (e.g. USB differential pairs)
+⭐ Star the repository
 
-## References
-1. M. Baranwal and S. M. Salapaka, "Clustering of Power Networks: An Information-Theoretic Perspective," IEEE CDC, 2015.
-2. K. Rose, "Deterministic Annealing for Clustering," Proceedings of the IEEE, vol. 86, no. 11, 1998.
-3. FOSSEE Project, IIT Bombay. eSim: Free and Open Source EDA Tool. https://esim.fossee.in
-4. NGSpice Development Team. NGSpice User Manual, Version 42. https://ngspice.sourceforge.io
-5. KiCad EDA. KiCad 8.0 Scripting Reference. https://docs.kicad.org/8.0/en/scripting/
+🍴 Fork the repository
 
-## License
-This project is developed under the FOSSEE Internship Program, IIT Bombay, and is distributed under the **GPL-3.0 License**.
+🛠 Contribute to the project
+
+📢 Share it with others
+
+---
+
+<p align="center">
+
+Made with ❤️ using Python, KiCad, NetworkX and NGSpice.
+
+</p>
