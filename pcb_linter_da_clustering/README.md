@@ -2,7 +2,7 @@
 
 An intelligent **KiCad PCBNew plugin** for automated electrical rule analysis using **Graph Analytics**, **NGSpice Simulation**, and **Deterministic Annealing Clustering**.
 
-> **Developed by Prisha Bhatia** as part of the **FOSSEE IIT Bombay eSim Summer Fellowship**.
+> **Developed by Prisha Bhatia** as part of the **FOSSEE IIT Bombay eSim Semester Internship**.
 
 ---
 
@@ -159,7 +159,7 @@ PCB Linter can be used for:
 
 ## 🤝 Acknowledgements
 
-This project was developed during the **FOSSEE IIT Bombay eSim Summer Fellowship**.
+This project was developed during the **FOSSEE IIT Bombay eSim Semester Long Internship**.
 
 Special thanks to:
 
@@ -169,8 +169,4 @@ Special thanks to:
 - NGSpice Developers
 - NetworkX Developers
 
----
 
-## 📜 License
-
-This project is licensed under the **MIT License**.
